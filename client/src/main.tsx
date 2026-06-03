@@ -40,12 +40,13 @@ queryClient.getMutationCache().subscribe(event => {
 const trpcClient = trpc.createClient({
   links: [
     httpBatchLink({
-      url: "/api/trpc",
+      // 🌟 修正：把路徑指到你本地正在跑的 Express 後端（3000 埠口）
+      url: "http://localhost:3000/api/trpc", 
       transformer: superjson,
       fetch(input, init) {
         return globalThis.fetch(input, {
           ...(init ?? {}),
-          credentials: "include",
+          credentials: "include", // 確保跨網域攜帶 Cookie 憑證
         });
       },
     }),
